@@ -1,2 +1,2 @@
 # ETHAN
-def trans
+def phrase_binn()
