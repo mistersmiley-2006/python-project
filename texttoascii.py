@@ -1,1 +1,2 @@
 # ETHAN
+def trans
