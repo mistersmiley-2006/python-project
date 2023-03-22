@@ -1,9 +1,22 @@
 from PIL import Image
 
-image = Image.new('RGB', (100, 200), (200, 200, 200))
-image.show()
-#recuperer le pixel en binaire
+image = Image.open("image_test.bmp")
 
-#recuperer le code ascii qui correspond à cet indice 
-
-#si le dernier bit du pixel est le bon ne rien faire sinon changer le bit
+def EncoderImage(img: list,textAscii:list)->list:
+    '''
+    Code le message dans l'image
+    img : l'image a modifier
+    textAscii : la liste contenant le message sous forme binaire
+    '''
+    l, h = img.size 
+    i = 0
+    msgSize = len(textAscii)
+    for x in range(l):
+        for y in range(h):
+            if i >= msgSize:
+                return img
+            r, g, b = img.getpixel((x, y))
+            if textAscii[i] != bin(b)[-1:]:
+                bin(b)[-1:] = textAscii[i]
+            i += 1
+    return img
