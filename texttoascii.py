@@ -2,7 +2,7 @@
 txt="le petit cheval dans la prairie"
 
 
-def transfo (txt):
+def transfo(txt):
     '''
     '''
     long1=0
@@ -17,3 +17,5 @@ def transfo (txt):
         list.append(temp1)
         temp1=0
     return list
+
+print(transfo(txt))
