@@ -5,6 +5,24 @@ from easygui import *
 
 image = Image.open('image_test.bmp')
 
+def dernierbit(b:int)->int:
+    '''
+    renvoie le dernier bit de la composante bleue
+    '''
+    return bin(b)[-1:]
+print(dernierbit(255))
+
+def limitedetecter(img:list)->int:
+    '''
+    renvoie la limite en integer
+    '''
+    temp=""
+    for x in range(16):
+        r,g,b=img.getpixel((x,0))
+        temp+=str(dernierbit(b))
+    return temp
+
+
 def imgbin(img:list)->list:
     '''
     renvoie le dernier bit de la composante bleue de chaque pixel de l'image en entrée (sous forme de tableau)
