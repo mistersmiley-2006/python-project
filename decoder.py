@@ -3,14 +3,20 @@
 from PIL import Image
 from easygui import *
 
-image = Image.open('image_test.bmp')
+image = Image.open('./image_test.bmp')
+
+def bintoint(binaire:str)->int:
+    '''
+    renvoie l'integer qui correspond
+    '''
+    return int(binaire,2)
 
 def dernierbit(b:int)->int:
     '''
     renvoie le dernier bit de la composante bleue
     '''
     return bin(b)[-1:]
-print(dernierbit(255))
+
 
 def limitedetecter(img:list)->int:
     '''
@@ -20,7 +26,7 @@ def limitedetecter(img:list)->int:
     for x in range(16):
         r,g,b=img.getpixel((x,0))
         temp+=str(dernierbit(b))
-    return temp
+    return bintoint(temp)
 
 
 def imgbin(img:list)->list:
@@ -29,10 +35,13 @@ def imgbin(img:list)->list:
     '''
     codeBinaire = []
     l,h = img.size
+    increment=0
     for x in range(l):
         for y in range(h):
-            r,g,b=img.getpixel((x,y))
-            codeBinaire.append(bin(b)[-1:])
+            if increment <= limitedetecter(image)*7:
+                r,g,b=img.getpixel((x,y))
+                codeBinaire.append(bin(b)[-1:])
+                increment+=1
     return codeBinaire
 
 def imgascii(binaire:list)->str:
