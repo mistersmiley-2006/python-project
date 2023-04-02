@@ -1,73 +1,69 @@
 # AMIN
 
 from PIL import Image
-from easygui import *
 
 image = Image.open('./image_test.bmp')
 
-def bintoint(binaire:str)->int:
+
+def bintoint(binaire: str) -> int:
     '''
     renvoie l'integer qui correspond
     '''
-    return int(binaire,2)
+    return int(binaire, 2)
 
-def dernierbit(b:int)->int:
+
+def dernierbit(b: int) -> int:
     '''
     renvoie le dernier bit de la composante bleue
     '''
     return bin(b)[-1:]
 
 
-def limitedetecter(img:list)->int:
+def limitedetecter(img: list) -> int:
     '''
     renvoie la limite en integer
     '''
-    temp=""
+    temp = ""
     for x in range(16):
-        r,g,b=img.getpixel((x,0))
-        temp+=str(dernierbit(b))
+        r, g, b = img.getpixel((x, 0))
+        temp += str(dernierbit(b))
     return bintoint(temp)
 
 
-def imgbin(img:list)->list:
+def imgbin(img: list) -> list:
     '''
     renvoie le dernier bit de la composante bleue de chaque pixel de l'image en entrée (sous forme de tableau)
+    commence au 17ème pixel et tremine à la limite
     '''
     codeBinaire = []
-    l,h = img.size
-    increment=0
-    for x in range(l):
-        for y in range(h):
-            if increment <= limitedetecter(image)*7:
-                r,g,b=img.getpixel((x,y))
-                codeBinaire.append(bin(b)[-1:])
-                increment+=1
-    return codeBinaire
-
-def imgascii(binaire:list)->str:
-    '''
-    Convertir un tableau de chiffres en binaire en texte ASCII, le programme s'arrête à la fin de la limite de caractère écrite dans les 16 premiers bits
-    '''
-    limite = ""
+    l, h = img.size
     increment = 0
     character = ""
-    codeASCII = ""
-    for bit in binaire :
-        if increment < 16 :
-            limite += bit
-        elif increment==16 :
-            limite = int(limite,2)
-        else :
-            if increment % 8 == 0 :
-                codeASCII += chr(int(character,2))
-                character = ""
-            else :
-                character += bit
-        increment += 1
-    return codeASCII
-
-msgbox((imgascii(imgbin(image))))
-            
-            
+    for x in range(17, l):
+        for y in range(h):
+            if increment < limitedetecter(img)*7:
+                r, g, b = img.getpixel((x, y))
+                if (increment+1) % 7 == 0:
+                    codeBinaire.append(character)
+                    character = dernierbit(b)
+                else:
+                    character += dernierbit(b)
+                increment += 1
+    return codeBinaire
 
 
+def imgascii(binaire: list) -> str:
+    '''
+    Convertir un tableau de chiffres en binaire en texte ASCII
+    '''
+    texte = ""
+    for code in binaire:
+        texte += chr(bintoint(code))
+    return texte
+
+
+binary = imgbin(image)
+print(binary)
+print(imgascii(binary))
+print("limite : " + str(limitedetecter(image)))
+print("longueur : " + str(len(binary)))
