@@ -10,10 +10,9 @@ def TailleImgSuffisante(img: list, textAscii:list) ->bool:
     textAscii : le texte en binaire
     '''
     # calcule de la definition de l'image
-    l, h = img.size()
-    definition = l*h
+    l, h = img.size
 
-    if definition > len(textAscii): # verifie si la definition de l'image est suffisante
+    if l*h > len(textAscii): # verifie si la definition de l'image est suffisante
         return True
     return False
 
@@ -31,11 +30,12 @@ def EncoderImage(img: list,textAscii:list)->list:
 
         for i in range(len(textAscii)):
             r, g, b = img.getpixel((x, y)) # on recupère la couleur
-            if textAscii[i] != bin(b)[-1:]: # on verifie si on a besoin de modifier le bleu
+
+            if textAscii[i] != int(bin(b)[-1]): # on verifie si on a besoin de modifier le bleu
                 b -= 1 # -1 pour changer le bit de 1
 
             img.putpixel((x, y), (r, g, b)) # on injecte la nouvelle couleur
-            
+
             # conditions au cas ou on arrive au bout de la ligne de l'image
             if x >= l:
                 x = 0
@@ -47,3 +47,4 @@ def EncoderImage(img: list,textAscii:list)->list:
     else:
         print("Erreur : la taille de l'image est insuffisante pour coder le texte")
         return None
+    
