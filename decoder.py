@@ -39,11 +39,12 @@ def imgbin(img: list) -> list:
     l, h = img.size
     increment = 0
     character = ""
-    for x in range(17, l):
-        for y in range(h):
-            if increment < limitedetecter(img)*7:
+    for x in range(h):
+        for y in range(17, l):  # les coordonnées de y vont de 17 à h (largeur de l'image)
+            # le script ne s'exécute que si le nombre de fois que la boucle a été exécutée est inférieur au nombre de caractères à décoder
+            if increment < limitedetecter(img)*8:
                 r, g, b = img.getpixel((x, y))
-                if (increment+1) % 7 == 0:
+                if (increment+1) % 8 == 0:
                     codeBinaire.append(character)
                     character = dernierbit(b)
                 else:
